@@ -16,10 +16,16 @@ public class Producer {
         org.apache.pulsar.client.api.Producer producer = pulsarClient.newProducer(Schema.STRING)
                             .topic(AppConfig.TOPIC)
                             .create();
-        for (int i = 1; i<=90 ; i++){
-            producer.newMessage().key("key" + i).value("value" + i).send();
-            TimeUnit.SECONDS.sleep(1);
-        }
+        producer.newMessage().key("key-1").value("message-1-1").send();
+        producer.newMessage().key("key-1").value("message-1-2").send();
+        producer.newMessage().key("key-1").value("message-1-3").send();
+        producer.newMessage().key("key-2").value("message-2-1").send();
+        producer.newMessage().key("key-2").value("message-2-2").send();
+        producer.newMessage().key("key-2").value("message-2-3").send();
+        producer.newMessage().key("key-3").value("message-3-1").send();
+        producer.newMessage().key("key-3").value("message-3-2").send();
+        producer.newMessage().key("key-4").value("message-4-1").send();
+        producer.newMessage().key("key-4").value("message-4-2").send();
         producer.close();
         pulsarClient.close();
 
