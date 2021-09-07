@@ -1,7 +1,10 @@
 package Consumer;
 
+import Model.User;
+import netscape.javascript.JSObject;
 import org.apache.pulsar.client.api.*;
 import Config.AppConfig;
+import org.apache.pulsar.client.impl.schema.JSONSchema;
 
 public class SimpleConsumer {
     public static void main(String[] args) throws PulsarClientException {
@@ -12,18 +15,17 @@ public class SimpleConsumer {
                 .topic(AppConfig.TOPIC)
                 .consumerName("simple-consumer")
                 .subscriptionName("test-subs")
-                .subscribe();for(int i = 1; i<=60; i++){
-            Message msg = consumer.receive();
+                .subscribe();
+        while (true){
+            Message<User> msg = consumer.receive();
+            System.out.println("Received: "+ "Key: " +msg.getKey() + "Value " +msg.getData());
             try{
-                System.out.println("Received: " + new String(msg.getData()+msg.getKey()));
+
                 consumer.acknowledge(msg);
             }catch (Exception e){
                 consumer.negativeAcknowledge(msg);
             }
         }
-        consumer.close();
-        pulsarClient.close();
-
 
     }
 }
